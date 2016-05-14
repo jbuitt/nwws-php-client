@@ -1,0 +1,62 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "1d3642f3875db26c931658aa27b63c5e",
+    "content-hash": "e98f0c66e79b5df029fcfa0464d89e5b",
+    "packages": [
+        {
+            "name": "abhinavsingh/jaxl",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jaxl/JAXL.git",
+                "reference": "7e1f1d8841e6214f73492a5693f97fb7424ad9f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jaxl/JAXL/zipball/7e1f1d8841e6214f73492a5693f97fb7424ad9f6",
+                "reference": "7e1f1d8841e6214f73492a5693f97fb7424ad9f6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "jaxl.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Abhinavsingh",
+                    "homepage": "https://github.com/abhinavsingh"
+                }
+            ],
+            "description": "jaxl - Jabber XMPP Client Library in PHP.",
+            "homepage": "http://jaxl.readthedocs.org/en/latest/index.html",
+            "keywords": [
+                "abhinavsingh",
+                "jabber",
+                "jaxl",
+                "xmpp"
+            ],
+            "time": "2012-11-15 18:29:58"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
