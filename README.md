@@ -21,12 +21,11 @@ Now create a config file: (e.g. config.json)
   "password": "[paswword]",
   "resource": "[resource]",
   "logfile": "/path/to/log/file",
-  "archivedir": "/path/to/archive/dir",
-  "debugfile": "/path/to/debug/file"
+  "archivedir": "/path/to/archive/dir"
 }
 ```
 
-Where [username] and [password] are your NWWS-2 credentials obtained by signing up [on the NOAA Weather Wire Service website](http://www.nws.noaa.gov/nwws/#NWWS_OI_Request). You may use whatever you would like for [resource]. If you supply a path to a file for `debugfile`, it will log all XMPP debug messages to that file, however this is optional.
+Where [username] and [password] are your NWWS-2 credentials obtained by signing up [on the NOAA Weather Wire Service website](http://www.nws.noaa.gov/nwws/#NWWS_OI_Request). You may use whatever you would like for [resource]. 
 
 Now run the script:
 
