@@ -16,10 +16,20 @@ $CONF = json_decode(file_get_contents($argv[1]), TRUE);
 // initialize JAXL object with initial config
 //
 $client = new JAXL(array(
-	// (required) credentials
-	'jid'       => $CONF['username'] . '@' . $CONF['server'],
-	'pass'      => $CONF['password'],
-	'log_level' => JAXL_INFO
+	'jid'            => $CONF['username'] . '@' . $CONF['server'],
+	'pass'           => $CONF['password'],
+	'host'           => $CONF['server'],
+	'port'           => $CONF['port'],
+	'force_tls'      => TRUE,
+	'resource'       => $CONF['resource'],
+	'log_level'      => JAXL_INFO,
+	'priv_dir'       => '.jaxl',
+	'stream_context' => stream_context_create(array(
+		'ssl' => array(
+			'verify_peer' => false,		// This is required to connect to NWWS-2
+			'cafile' => '/etc/ssl/certs/cacert.pem',
+		)
+	)),
 ));
 
 $client->require_xep(array(
@@ -37,7 +47,8 @@ $room_full_jid = new XMPPJid($_room_full_jid);
 
 $client->add_cb('on_auth_success', function() {
 	global $client, $room_full_jid;
-	_info("got on_auth_success cb, jid ".$client->full_jid->to_string());
+	//_info("got on_auth_success cb, jid ".$client->full_jid->to_string());
+	printToLog("got on_auth_success cb, jid ".$client->full_jid->to_string());
 
 	// join muc room
 	$client->xeps['0045']->join_room($room_full_jid);
@@ -46,11 +57,13 @@ $client->add_cb('on_auth_success', function() {
 $client->add_cb('on_auth_failure', function($reason) {
 	global $client;
 	$client->send_end_stream();
-	_info("got on_auth_failure cb with reason $reason");
+	//_info("got on_auth_failure cb with reason $reason");
+	printToLog("got on_auth_failure cb with reason $reason");
 });
 
 $client->add_cb('on_groupchat_message', function($stanza) {
 	global $client;
+	global $CONF;
 	
 	if (preg_match('/^\*\*WARNING\*\*/', $stanza->body)) {
 		return;
@@ -66,12 +79,12 @@ $client->add_cb('on_groupchat_message', function($stanza) {
 	$delay = $stanza->exists('delay', NS_DELAYED_DELIVERY);
 	
 	if($from->resource) {
-		echo "message stanza rcvd from ".$from->resource." saying... ".$stanza->body.($delay ? ", delay timestamp ".$delay->attrs['stamp'] : ", timestamp ".gmdate("Y-m-dTH:i:sZ")).PHP_EOL;
+		printToLog("message stanza rcvd from ".$from->resource." saying... ".$stanza->body.($delay ? ", delay timestamp ".$delay->attrs['stamp'] : ", timestamp ".gmdate("Y-m-dTH:i:sZ")));
 	}
 	else {
 		$subject = $stanza->exists('subject');
 		if($subject) {
-			echo "room subject: ".$subject->text.($delay ? ", delay timestamp ".$delay->attrs['stamp'] : ", timestamp ".gmdate("Y-m-dTH:i:sZ")).PHP_EOL;
+			printToLog("room subject: ".$subject->text.($delay ? ", delay timestamp ".$delay->attrs['stamp'] : ", timestamp ".gmdate("Y-m-dTH:i:sZ")));
 		}
 	}
 
@@ -85,27 +98,36 @@ $client->add_cb('on_groupchat_message', function($stanza) {
 			$id       = '';
 			if (isset($child->name->attrs['awipsid'])) {
 				$awipsid = $child->name->attrs['awipsid'];
-				echo "**DEBUG** \$awipsid = $awipsid\n";
+				//echo "**DEBUG** \$awipsid = $awipsid\n";
 			}
 			if (isset($child->name->attrs['issue'])) {
 				$wfo = $child->name->attrs['cccc'];
-				echo "**DEBUG** \$wfo = $wfo\n";
+				//echo "**DEBUG** \$wfo = $wfo\n";
 			}
 			if (isset($child->name->attrs['issue'])) {
 				$prodDate = preg_replace('/[\-T\:]/', '', $child->name->attrs['issue']);
 				$prodDate = preg_replace('/Z$/', '', $prodDate);
-				echo "**DEBUG** \$prodDate = $prodDate\n";
+				//echo "**DEBUG** \$prodDate = $prodDate\n";
 			}
 			if (isset($child->name->attrs['id'])) {
 				$id = $child->name->attrs['id'];
-				echo "**DEBUG** \$id = $id\n";
+				//echo "**DEBUG** \$id = $id\n";
 			}
-			// TODO: Write out file to archive directory
+			// Write out file to archive directory
 			if ($awipsid !== '' && $wfo !== '' && $prodDate !== '' && $id !== '') {
+				if (!file_exists($CONF['archivedir'])) {
+					mkdir($CONF['archivedir']);
+				}
+				if (!file_exists($CONF['archivedir'] . '/' . $wfo)) {
+					mkdir($CONF['archivedir'] . '/' . $wfo);
+				}
+				$file = $awipsid . '-' . $id . '-' . $prodDate . '.txt';
+				$outfile = fopen($CONF['archivedir'] . '/' . $wfo . '/' . $file, "w");
 				$prod_contents = preg_split("/\n\n/", $child->name->text);
 				for($j=0; $j<count($prod_contents); $j++) {
-					print $prod_contents[$j] . "\n";
+					fwrite($outfile, $prod_contents[$j] . "\n");
 				}
+				fclose($outfile);
 			}
 		}
 	}
@@ -150,13 +172,22 @@ $client->add_cb('on_presence_stanza', function($stanza) {
 });
 
 $client->add_cb('on_disconnect', function() {
-	_info("got on_disconnect cb");
+	printToLog("got on_disconnect cb");
+	//_info("got on_disconnect cb");
 });
 
 //
 // finally start configured xmpp stream
 //
 $client->start();
-echo "done\n";
+
+
+function printToLog($logMsg)
+{
+	global $CONF;
+	$logfile = fopen($CONF['logfile'], 'a');
+	fwrite($logfile, $logMsg . "\n");
+	fclose($logfile);
+}
 
 ?>
