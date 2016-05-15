@@ -11,7 +11,7 @@ This script was developed and tested on [Ubuntu 14.04](http://ubuntu.com). After
     $ composer install
 ```
 
-Now create a config file (e.g. config.json) with the following format:
+Now create a config file with the following JSON format:
 
 ```
 {
@@ -30,7 +30,7 @@ Where [username] and [password] are your NWWS-2 credentials obtained by signing 
 Now run the script:
 
 ```
-$ php ./nwws2.php /path/to/config.json
+$ php ./nwws2.php /path/to/config/file
 ```
 
 Provided that you're able to connect to the NWWS and your credentials are accepted, you will start to see products appear in the supplied archive directory in the following format:
