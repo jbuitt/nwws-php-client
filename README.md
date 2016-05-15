@@ -11,7 +11,7 @@ This script was developed and tested on [Ubuntu 14.04](http://ubuntu.com). After
     $ composer install
 ```
 
-Now create a config file: (e.g. config.json)
+Now create a config file (e.g. config.json) with the following format:
 
 ```
 {
