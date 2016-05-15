@@ -179,7 +179,10 @@ $client->add_cb('on_disconnect', function() {
 //
 // finally start configured xmpp stream
 //
-$client->start();
+while(1) {
+	$client->start();
+	sleep(1);
+}
 
 
 function printToLog($logMsg)
