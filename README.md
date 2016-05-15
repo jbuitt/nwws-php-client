@@ -49,5 +49,5 @@ You can then type `Ctrl+Z` and then `bg` to send it to the background to continu
 
 ## License
 
-See [LICENSE](https://github.com/jbuitt/nwws-perl-client/blob/master/LICENSE) file.
+See [LICENSE](https://github.com/jbuitt/nwws-php-client/blob/master/LICENSE) file.
 
