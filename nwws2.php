@@ -126,8 +126,6 @@ $client->add_cb('on_groupchat_message', function($stanza) {
 				if (!file_exists($CONF['archivedir'] . '/' . $wfo)) {
 					mkdir($CONF['archivedir'] . '/' . $wfo);
 				}
-				// archive/kjax/kjax_fzus52-cwfjax.29238_1809.txt
-				// 1474119515
 				$tmp_array = explode('.', $id);
 				$new_id = gmdate('yHi') . '_' . substr(time(), 0, 3) . $tmp_array[1];
 				$file = $wfo . '_' . $wmoCode . '-' . $awipsid . '.' . $new_id . '.txt';
@@ -137,6 +135,15 @@ $client->add_cb('on_groupchat_message', function($stanza) {
 					fwrite($outfile, $prod_contents[$j] . "\n");
 				}
 				fclose($outfile);
+				// Perform Product Arrival Notification (PAN) action, if it exists and is executable
+				if (isset($CONF['pan_run'])) {
+					if (is_executable($CONF['pan_run'])) {
+						exec($CONF['pan_run'] . ' ' . getcwd() . '/' . $CONF['archivedir'] . '/' . $wfo . '/' . $file . ' 2>&1 &', $output, $retval);
+						if ($retval !== 0) {
+							printToLog("Error running PAN executable: " . implode(" ", $output));
+						}
+					}
+				}
 			}
 		}
 	}
