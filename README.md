@@ -5,7 +5,7 @@ A simple client for the NWWS-2 OI ([NOAA Weather Wire Service](http://www.nws.no
 This client was largely based on the example muc_log_bot.php script found in the [JAXL XMPP PHP Library](https://github.com/jaxl/JAXL).
 
 ####How do I run it?
-This script was developed and tested on [Ubuntu 14.04](http://ubuntu.com). After downloading the latest [release](https://github.com/jbuitt/nwws-perl-client), run the following command to install the php dependencies. You need at least PHP **5.6+** and a recent version of **Composer**
+This script was developed and tested on [Ubuntu 14.04](http://ubuntu.com). After downloading the latest [release](https://github.com/jbuitt/nwws-php-client), run the following command to install the php dependencies. You need at least PHP **5.6+** and a recent version of **Composer**
 
 ```
     $ composer install
