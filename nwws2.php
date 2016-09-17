@@ -94,15 +94,20 @@ $client->add_cb('on_groupchat_message', function($stanza) {
 			//var_dump($child->name);
 			$awipsid  = '';
 			$wfo      = '';
+			$wmoCode  = '';
 			$prodDate = '';
 			$id       = '';
 			if (isset($child->name->attrs['awipsid'])) {
-				$awipsid = $child->name->attrs['awipsid'];
+				$awipsid = strtolower($child->name->attrs['awipsid']);
 				//echo "**DEBUG** \$awipsid = $awipsid\n";
 			}
 			if (isset($child->name->attrs['issue'])) {
-				$wfo = $child->name->attrs['cccc'];
+				$wfo = strtolower($child->name->attrs['cccc']);
 				//echo "**DEBUG** \$wfo = $wfo\n";
+			}
+			if (isset($child->name->attrs['ttaaii'])) {
+				$wmoCode = strtolower($child->name->attrs['ttaaii']);
+				//echo "**DEBUG** \$wmoCode = $wmoCode\n";
 			}
 			if (isset($child->name->attrs['issue'])) {
 				$prodDate = preg_replace('/[\-T\:]/', '', $child->name->attrs['issue']);
@@ -121,7 +126,11 @@ $client->add_cb('on_groupchat_message', function($stanza) {
 				if (!file_exists($CONF['archivedir'] . '/' . $wfo)) {
 					mkdir($CONF['archivedir'] . '/' . $wfo);
 				}
-				$file = $awipsid . '-' . $id . '-' . $prodDate . '.txt';
+				// archive/kjax/kjax_fzus52-cwfjax.29238_1809.txt
+				// 1474119515
+				$tmp_array = explode('.', $id);
+				$new_id = gmdate('yHi') . '_' . substr(time(), 0, 3) . $tmp_array[1];
+				$file = $wfo . '_' . $wmoCode . '-' . $awipsid . '.' . $new_id . '.txt';
 				$outfile = fopen($CONF['archivedir'] . '/' . $wfo . '/' . $file, "w");
 				$prod_contents = preg_split("/\n\n/", $child->name->text);
 				for($j=0; $j<count($prod_contents); $j++) {
