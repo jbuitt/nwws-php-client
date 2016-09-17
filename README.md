@@ -38,7 +38,7 @@ Provided that you're able to connect to the NWWS and your credentials are accept
 ```
 [archive_dir]/
    [wfo]/
-      [awips_id]-[product_id]-[product_datetime].txt
+      [wfo]_[wmo_id]-[awips_id].[product_datehour]_[product_id].txt
 ```
 
 You can then type `Ctrl+Z` and then `bg` to send it to the background to continue downloading products. The script will automatically reconnect to NWWS if the connection is dropped.
