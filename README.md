@@ -22,7 +22,7 @@ Now create a config file with the following JSON format:
   "resource": "[resource]",
   "logfile": "/path/to/log/file",
   "archivedir": "/path/to/archive/dir",
-  "pan_run": "/path/to/pan/executable_or_script"
+  "pan_run": "/path/to/executable_or_script"
 }
 ```
 
