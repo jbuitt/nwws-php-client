@@ -1,7 +1,2 @@
 #!/bin/bash
 nohup $(which php) nwws2.php config.json &
-sleep 1
-PID=$(ps -ef | grep [p]hp | grep [n]wws2 | awk '{print $2}')
-if [ "$PID" != "" ]; then
-	echo $PID >/opt/nwws-php-client/nwws2.pid
-fi
