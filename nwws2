@@ -1,2 +1,2 @@
 #!/bin/bash
-nohup $(which php) nwws2.php config.json &
+$(which php) nwws2.php config.json >/dev/null 2>&1 &

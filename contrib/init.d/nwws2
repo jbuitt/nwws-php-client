@@ -53,7 +53,7 @@ stop_nwws2() {
 	#   2 if daemon could not be stopped
 	#   other if a failure occurred
 	start-stop-daemon --stop --quiet --pidfile $PIDFILE \
-		--name $NAME --remove-pidfile
+		--name $NAME
 	RETVAL="$?"
 	sleep 1
 	return "$RETVAL"
