@@ -1,0 +1,107 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:	     nwws2
+# Required-Start:    $local_fs $remote_fs $network $syslog $named
+# Required-Stop:     $local_fs $remote_fs $network $syslog $named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the NOAA Weather Wire PHP client
+# Description:       starts nwws2 using start-stop-daemon
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/opt/nwws-php-client/nwws2
+NAME=nwws2
+DESC=nwws2
+
+# Include nwws2 defaults if available
+if [ -r /etc/default/nwws2 ]; then
+	. /etc/default/nwws2
+fi
+
+test -x $DAEMON || exit 0
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+# Try to extract nwws2 pidfile
+PID=/opt/nwws-php-client/nwws2.pid
+
+start_nwws2() {
+	# Start the daemon/service
+	#
+	# Returns:
+	#   0 if daemon has been started
+	#   1 if daemon was already running
+	#   2 if daemon could not be started
+	start-stop-daemon --start --quiet --pidfile $PID --exec $DAEMON -- \
+		$DAEMON_OPTS 2>/dev/null \
+		|| return 2
+}
+
+stop_nwws2() {
+	# Stops the daemon/service
+	#
+	# Return
+	#   0 if daemon has been stopped
+	#   1 if daemon was already stopped
+	#   2 if daemon could not be stopped
+	#   other if a failure occurred
+	start-stop-daemon --stop --quiet --pidfile $PID --name $NAME
+	rm -f $PID
+	RETVAL="$?"
+	sleep 1
+	return "$RETVAL"
+}
+
+case "$1" in
+	start)
+		log_daemon_msg "Starting $DESC" "$NAME"
+		start_nwws2
+		case "$?" in
+			0|1) log_end_msg 0 ;;
+			2)   log_end_msg 1 ;;
+		esac
+		;;
+	stop)
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		stop_nwws2
+		case "$?" in
+			0|1) log_end_msg 0 ;;
+			2)   log_end_msg 1 ;;
+		esac
+		;;
+	restart)
+		log_daemon_msg "Restarting $DESC" "$NAME"
+
+		# Check configuration before stopping nwws2
+		if ! test_config; then
+			log_end_msg 1 # Configuration error
+			exit $?
+		fi
+
+		stop_nwws2
+		case "$?" in
+			0|1)
+				start_nwws2
+				case "$?" in
+					0) log_end_msg 0 ;;
+					1) log_end_msg 1 ;; # Old process is still running
+					*) log_end_msg 1 ;; # Failed to start
+				esac
+				;;
+			*)
+				# Failed to stop
+				log_end_msg 1
+				;;
+		esac
+		;;
+	status)
+		status_of_proc -p $PID "$DAEMON" "$NAME" && exit 0 || exit $?
+		;;
+	*)
+		echo "Usage: $NAME {start|stop|restart|status}" >&2
+		exit 3
+		;;
+esac

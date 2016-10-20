@@ -1,0 +1,11 @@
+/opt/nwws-php-client/nwws2.log {
+	daily
+	rotate 7
+	compress
+	notifempty
+	create 0644 deployment deployment
+	sharedscripts
+	postrotate
+		/usr/sbin/service nwws2 restart >/dev/null 2>&1
+	endscript
+}
