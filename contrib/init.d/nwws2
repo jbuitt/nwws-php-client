@@ -38,8 +38,7 @@ start_nwws2() {
 	#   2 if daemon could not be started
 	#start-stop-daemon --start --quiet --pidfile $PID --exec $DAEMON --test > /dev/null \
         #        || return 1
-	start-stop-daemon --start --quiet --pidfile $PIDFILE \
-		--chuid $USER --chdir $BASEDIR --make-pidfile \
+	start-stop-daemon --start --quiet --chuid $USER \
 		--exec $DAEMON -- $DAEMON_OPTS 2>/dev/null \
 		|| return 2
 }
@@ -52,8 +51,7 @@ stop_nwws2() {
 	#   1 if daemon was already stopped
 	#   2 if daemon could not be stopped
 	#   other if a failure occurred
-	start-stop-daemon --stop --quiet --pidfile $PIDFILE \
-		--name $NAME
+	start-stop-daemon --stop --quiet --pidfile $PIDFILE --name $NAME
 	RETVAL="$?"
 	sleep 1
 	return "$RETVAL"

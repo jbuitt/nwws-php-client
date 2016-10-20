@@ -1,2 +1,11 @@
 #!/bin/bash
+. /etc/default/nwws2
+cd $BASEDIR/
 $(which php) nwws2.php config.json >/dev/null 2>&1 &
+sleep 1
+if [ "$?" = 0 ]; then
+	PID=$(ps -ef | grep [p]hp | grep nwws2 | awk '{print $2}')
+	if [ "$PID" != "" ]; then
+		echo $PID >$PIDFILE
+	fi
+fi
