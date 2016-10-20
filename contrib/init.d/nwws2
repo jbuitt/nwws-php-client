@@ -20,6 +20,7 @@ if [ -r /etc/default/nwws2 ]; then
 	. /etc/default/nwws2
 fi
 
+[ "$BASEDIR" = "" ] && exit 0
 [ "$USER" = "" ] && exit 0
 [ "$PIDFILE" = "" ] && exit 0
 
@@ -38,8 +39,8 @@ start_nwws2() {
 	#start-stop-daemon --start --quiet --pidfile $PID --exec $DAEMON --test > /dev/null \
         #        || return 1
 	start-stop-daemon --start --quiet --pidfile $PIDFILE \
-		--chuid $USER --make-pidfile --exec $DAEMON -- \
-		$DAEMON_OPTS 2>/dev/null \
+		--chuid $USER --chdir $BASEDIR --make-pidfile \
+		--exec $DAEMON -- $DAEMON_OPTS 2>/dev/null \
 		|| return 2
 }
 

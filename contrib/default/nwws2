@@ -1,2 +1,3 @@
+BASEDIR=/opt/nwws-php-client
 PIDFILE=/run/nwws2.pid
 USER=nwws2user
