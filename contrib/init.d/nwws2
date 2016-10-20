@@ -41,6 +41,10 @@ start_nwws2() {
 	start-stop-daemon --start --quiet --chuid $USER \
 		--exec $DAEMON -- $DAEMON_OPTS 2>/dev/null \
 		|| return 2
+	PID=$(ps -ef | grep [p]hp | grep $NAME | awk '{print $2}')
+	if [ "$PID" != "" ]; then
+		echo $PID >$PIDFILE
+	fi
 }
 
 stop_nwws2() {
@@ -51,8 +55,11 @@ stop_nwws2() {
 	#   1 if daemon was already stopped
 	#   2 if daemon could not be stopped
 	#   other if a failure occurred
-	start-stop-daemon --stop --quiet --pidfile $PIDFILE --remove-pidfile
+	start-stop-daemon --stop --quiet --pidfile $PIDFILE
 	RETVAL="$?"
+	if [ "$RETVAL" = 0 ]; then
+		rm -f $PIDFILE
+	fi
 	sleep 1
 	return "$RETVAL"
 }
