@@ -1,0 +1,2 @@
+PIDFILE=/opt/nwws-php-client/nwws2.pid
+USER=nwws2user
