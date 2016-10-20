@@ -128,6 +128,9 @@ $client->add_cb('on_groupchat_message', function($stanza) {
 				}
 				$tmp_array = explode('.', $id);
 				$new_id = gmdate('yHi') . '_' . substr(time(), 0, 3) . $tmp_array[1];
+				if (strlen($new_id) === 7) {
+					$new_id = '0' . $new_id;
+				}
 				$file = $wfo . '_' . $wmoCode . '-' . $awipsid . '.' . $new_id . '.txt';
 				$outfile = fopen($CONF['archivedir'] . '/' . $wfo . '/' . $file, "w");
 				$prod_contents = preg_split("/\n\n/", $child->name->text);
