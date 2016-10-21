@@ -6,6 +6,6 @@
 	create 0644 deployment deployment
 	sharedscripts
 	postrotate
-		/usr/sbin/service nwws2 restart >/dev/null 2>&1
+		/etc/init.d/nwws2 restart >/dev/null 2>&1
 	endscript
 }
