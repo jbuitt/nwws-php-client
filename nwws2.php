@@ -207,7 +207,7 @@ while(1) {
 function printToLog($logMsg)
 {
 	global $CONF;
-	$logfile = fopen($CONF['logfile'], 'a');
+	$logfile = fopen($CONF['logpath'] . '/' . $CONF['logprefix'] . '_' . date('Y-m-d') . '.log', 'a');
 	fwrite($logfile, $logMsg . "\n");
 	fclose($logfile);
 }

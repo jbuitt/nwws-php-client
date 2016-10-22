@@ -20,7 +20,8 @@ Now create a config file with the following JSON format:
   "username": "[username]",
   "password": "[paswword]",
   "resource": "[resource]",
-  "logfile": "/path/to/log/file",
+  "logpath": "/path/to/log/dir",
+  "logprefix": "logfile",
   "archivedir": "/path/to/archive/dir",
   "pan_run": "/path/to/executable_or_script"
 }
