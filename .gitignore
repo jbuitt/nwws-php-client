@@ -1,5 +1,5 @@
 /config.json
-/nwws2.log
+/*.log
 /archive
 /vendor
 /.jaxl
