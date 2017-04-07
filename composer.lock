@@ -4,51 +4,81 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d3642f3875db26c931658aa27b63c5e",
-    "content-hash": "e98f0c66e79b5df029fcfa0464d89e5b",
+    "hash": "bb086f95603af481238f60209c0af855",
+    "content-hash": "8ba69d94fae7b152b22cf2a2cc540099",
     "packages": [
         {
-            "name": "abhinavsingh/jaxl",
-            "version": "v3.0.0",
+            "name": "jaxl/jaxl",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaxl/JAXL.git",
-                "reference": "7e1f1d8841e6214f73492a5693f97fb7424ad9f6"
+                "reference": "27aa43c4600b05809779428843d8d51db6ce6e0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaxl/JAXL/zipball/7e1f1d8841e6214f73492a5693f97fb7424ad9f6",
-                "reference": "7e1f1d8841e6214f73492a5693f97fb7424ad9f6",
+                "url": "https://api.github.com/repos/jaxl/JAXL/zipball/27aa43c4600b05809779428843d8d51db6ce6e0d",
+                "reference": "27aa43c4600b05809779428843d8d51db6ce6e0d",
                 "shasum": ""
             },
             "require": {
+                "ext-curl": "*",
+                "ext-hash": "*",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-openssl": "*",
+                "ext-pcre": "*",
+                "ext-sockets": "*",
                 "php": ">=5.2.4"
             },
+            "require-dev": {
+                "phpunit/phpunit": "^3.7.0",
+                "squizlabs/php_codesniffer": "*"
+            },
+            "suggest": {
+                "ext-pcntl": "Interrupt JAXL with signals"
+            },
+            "bin": [
+                "jaxlctl"
+            ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1.x-dev"
+                }
+            },
             "autoload": {
-                "files": [
-                    "jaxl.php"
+                "classmap": [
+                    "src/JAXL"
+                ],
+                "exclude-from-classmap": [
+                    "/tests/"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
                     "name": "Abhinavsingh",
-                    "homepage": "https://github.com/abhinavsingh"
+                    "homepage": "https://abhinavsingh.com/"
                 }
             ],
-            "description": "jaxl - Jabber XMPP Client Library in PHP.",
+            "description": "Jaxl - Async, Non-Blocking, Event based Networking Library in PHP.",
             "homepage": "http://jaxl.readthedocs.org/en/latest/index.html",
             "keywords": [
                 "abhinavsingh",
+                "asynchronous",
+                "event loop",
+                "http",
                 "jabber",
                 "jaxl",
+                "non blocking",
+                "php",
                 "xmpp"
             ],
-            "time": "2012-11-15 18:29:58"
+            "time": "2016-09-13 01:59:35"
         }
     ],
     "packages-dev": [],

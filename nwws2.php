@@ -22,14 +22,16 @@ $client = new JAXL(array(
 	'port'           => $CONF['port'],
 	'force_tls'      => TRUE,
 	'resource'       => $CONF['resource'],
-	'log_level'      => JAXL_INFO,
+	'log_level'      => JAXLLogger::INFO,
 	'priv_dir'       => '.jaxl',
-	'stream_context' => stream_context_create(array(
-		'ssl' => array(
-			'verify_peer' => false,		// This is required to connect to NWWS-2
-			'cafile' => '/etc/ssl/certs/cacert.pem',
+	'stream_context' => stream_context_create(
+		array(
+			'ssl' => array(
+					'verify_peer' => false,		// This is required to connect to NWWS-2
+					'cafile' => '/etc/ssl/certs/cacert.pem',
+				)
 		)
-	)),
+	)
 ));
 
 $client->require_xep(array(
@@ -76,15 +78,14 @@ $client->add_cb('on_groupchat_message', function($stanza) {
 	}
 
 	$from = new XMPPJid($stanza->from);
-	$delay = $stanza->exists('delay', NS_DELAYED_DELIVERY);
 	
 	if($from->resource) {
-		printToLog("message stanza rcvd from ".$from->resource." saying... ".$stanza->body.($delay ? ", delay timestamp ".$delay->attrs['stamp'] : ", timestamp ".gmdate("Y-m-dTH:i:sZ")));
+		printToLog("message stanza rcvd from ".$from->resource." saying... ".$stanza->body.(", timestamp ".gmdate("Y-m-dTH:i:sZ")));
 	}
 	else {
 		$subject = $stanza->exists('subject');
 		if($subject) {
-			printToLog("room subject: ".$subject->text.($delay ? ", delay timestamp ".$delay->attrs['stamp'] : ", timestamp ".gmdate("Y-m-dTH:i:sZ")));
+			printToLog("room subject: ".$subject->text.(", timestamp ".gmdate("Y-m-dTH:i:sZ")));
 		}
 	}
 

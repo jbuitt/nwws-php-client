@@ -1,5 +1,5 @@
 {
     "require": {
-        "abhinavsingh/jaxl": "^3.0"
+        "jaxl/jaxl": "^3.1.0"
     }
 }

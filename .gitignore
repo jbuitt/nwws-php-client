@@ -1,5 +1,6 @@
 /config.json
 /*.log
-/archive
+/products
 /vendor
 /.jaxl
+/output.txt
