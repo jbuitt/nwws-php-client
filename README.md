@@ -44,7 +44,7 @@ Provided that you're able to connect to the NWWS and your credentials are accept
       [wfo]_[wmo_TTAAii]-[awips_id].[product_yearhour]_[product_id].txt
 ```
 
-You can then type `Ctrl+Z` and then `bg` to send it to the background to continue downloading products. The client will automatically reconnect to NWWS if the connection is dropped. I have also provided a 'nwws2' bash script to take care of running the client using [nohup](https://en.wikipedia.org/wiki/Nohup). You'll need to copy the file 'contrib/etc/default/nwws2' to '/etc/default' before running it.
+You can then type `Ctrl+Z` and then `bg` to send it to the background to continue downloading products. The client will automatically reconnect to NWWS if the connection is dropped. I have also provided a 'nwws2' bash script to take care of running the client using [nohup](https://en.wikipedia.org/wiki/Nohup). You'll need to copy the file 'contrib/etc/default/nwws2' to '/etc/default' before running the 'nwws2' script.
 
 ## Author
 
