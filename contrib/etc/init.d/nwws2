@@ -11,7 +11,6 @@
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/opt/nwws-php-client/nwws2
 NAME=nwws2
 DESC=nwws2
 
@@ -23,6 +22,8 @@ fi
 [ "$BASEDIR" = "" ] && exit 0
 [ "$USER" = "" ] && exit 0
 [ "$PIDFILE" = "" ] && exit 0
+
+DAEMON=$BASEDIR/nwws2
 
 test -x $DAEMON || exit 0
 
