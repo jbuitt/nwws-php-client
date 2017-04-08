@@ -1,4 +1,12 @@
 #!/bin/bash
+#
+# NOTE: You'll need to copy contrib/etc/default/nwws2 to /etc/default & update $BASEDIR 
+# to where you have the client installed before running this script.
+#
 . /etc/default/nwws2
+if [ "$BASEDIR" = "" ]; then
+	echo "Error: \$BASEDIR is not defined. Exiting"
+	exit 1
+fi
 cd $BASEDIR/
 nohup $(which php) nwws2.php config.json >/dev/null 2>&1 &
