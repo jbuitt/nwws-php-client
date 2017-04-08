@@ -4,81 +4,113 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bb086f95603af481238f60209c0af855",
-    "content-hash": "8ba69d94fae7b152b22cf2a2cc540099",
+    "hash": "6c8d318352d0ac7afde587f01800869d",
+    "content-hash": "9abfce7f6233d93447ed20fe53153086",
     "packages": [
         {
-            "name": "jaxl/jaxl",
-            "version": "v3.1.0",
+            "name": "fabiang/xmpp",
+            "version": "0.6.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jaxl/JAXL.git",
-                "reference": "27aa43c4600b05809779428843d8d51db6ce6e0d"
+                "url": "https://github.com/fabiang/xmpp.git",
+                "reference": "47fdbe4a60ef0e726c4aaf39d6eb57afd42915c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaxl/JAXL/zipball/27aa43c4600b05809779428843d8d51db6ce6e0d",
-                "reference": "27aa43c4600b05809779428843d8d51db6ce6e0d",
+                "url": "https://api.github.com/repos/fabiang/xmpp/zipball/47fdbe4a60ef0e726c4aaf39d6eb57afd42915c8",
+                "reference": "47fdbe4a60ef0e726c4aaf39d6eb57afd42915c8",
                 "shasum": ""
             },
             "require": {
-                "ext-curl": "*",
-                "ext-hash": "*",
-                "ext-json": "*",
-                "ext-libxml": "*",
-                "ext-openssl": "*",
-                "ext-pcre": "*",
-                "ext-sockets": "*",
-                "php": ">=5.2.4"
+                "php": ">=5.3.3",
+                "psr/log": "~1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^3.7.0",
-                "squizlabs/php_codesniffer": "*"
+                "behat/behat": "~2.5",
+                "monolog/monolog": "~1.11",
+                "phpunit/phpunit": "~4.3",
+                "satooshi/php-coveralls": "~0.6"
             },
             "suggest": {
-                "ext-pcntl": "Interrupt JAXL with signals"
+                "psr/log-implementation": "Allows more advanced logging of the xmpp connection"
             },
-            "bin": [
-                "jaxlctl"
-            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1.x-dev"
+                    "dev-master": "1.0.x-dev"
                 }
             },
             "autoload": {
-                "classmap": [
-                    "src/JAXL"
-                ],
-                "exclude-from-classmap": [
-                    "/tests/"
-                ]
+                "psr-4": {
+                    "Fabiang\\Xmpp\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "BSD-2-Clause"
             ],
             "authors": [
                 {
-                    "name": "Abhinavsingh",
-                    "homepage": "https://abhinavsingh.com/"
+                    "name": "Fabian Grutschus",
+                    "email": "f.grutschus@lubyte.de",
+                    "homepage": "http://www.lubyte.de/",
+                    "role": "developer"
                 }
             ],
-            "description": "Jaxl - Async, Non-Blocking, Event based Networking Library in PHP.",
-            "homepage": "http://jaxl.readthedocs.org/en/latest/index.html",
+            "description": "Library for XMPP protocol (Jabber) connections",
+            "homepage": "https://github.com/fabiang/xmpp",
             "keywords": [
-                "abhinavsingh",
-                "asynchronous",
-                "event loop",
-                "http",
                 "jabber",
-                "jaxl",
-                "non blocking",
-                "php",
                 "xmpp"
             ],
-            "time": "2016-09-13 01:59:35"
+            "time": "2014-11-20 08:59:24"
+        },
+        {
+            "name": "psr/log",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2016-10-10 12:19:37"
         }
     ],
     "packages-dev": [],

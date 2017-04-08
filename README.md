@@ -2,7 +2,7 @@
 
 A simple client for the NWWS-2 OI ([NOAA Weather Wire Service](http://www.nws.noaa.gov/nwws/) version 2 Open Interface) written in PHP. The NOAA Weather Wire Service is a satellite data collection and dissemination system operated by the [National Weather Service](http://weather.gov), which was established in October 2000. Its purpose is to provide state and federal government, commercial users, media and private citizens with timely delivery of meteorological, hydrological, climatological and geophysical information. 
 
-This client was largely based on the example muc_log_bot.php script found in the [JAXL XMPP PHP Library](https://github.com/jaxl/JAXL).
+This client uses Fabian Grutschus' popular [XMPP PHP library].(https://github.com/fabiang/xmpp).
 
 ####How do I run it?
 This script was developed and tested on [Ubuntu 16.04](http://ubuntu.com). After downloading the latest [release](https://github.com/jbuitt/nwws-php-client), run the following command to install the php dependencies. You need at least PHP **7.0+** and a recent version of **Composer**

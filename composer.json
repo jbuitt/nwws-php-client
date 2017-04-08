@@ -1,5 +1,5 @@
 {
     "require": {
-        "jaxl/jaxl": "^3.1.0"
+        "fabiang/xmpp": "^0.6.1"
     }
 }
