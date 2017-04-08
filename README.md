@@ -4,7 +4,8 @@ A simple client for the NWWS-2 OI ([NOAA Weather Wire Service](http://www.nws.no
 
 This client uses Fabian Grutschus' popular [XMPP PHP library](https://github.com/fabiang/xmpp).
 
-###How do I run it?
+####How do I run it?
+
 This script was developed and tested on [Ubuntu 16.04](http://ubuntu.com). After downloading the latest [release](https://github.com/jbuitt/nwws-php-client), run the following command to install the php dependencies. You need at least PHP **7.0+** and a recent version of **Composer**
 
 ```
