@@ -15,47 +15,67 @@ if($argc < 2) {
 
 $CONF = json_decode(file_get_contents($argv[1]), TRUE);
 
-// connect to NWWS-OI server
-$options = new Options('tcp://' . $CONF['server'] . ':5222');
-$options->setUsername($CONF['username'])->setPassword($CONF['password']);
-$client = new Client($options);
-$client->connect();
-
-// fetch roster list; users and their groups
-$client->send(new Roster);
-// set status to online
-$client->send(new Presence);
-
-// join nwws channel
-$channel = new Presence;
-$channel->setTo('nwws@conference.' . $CONF['server'] . '/' . $CONF['resource'])->setNickName($CONF['username']);
-$client->send($channel);
-
-// start receiving products
-$xmlData = '';
-$scanFlag = 0;
+// start connect loop
 while(TRUE) {
-	$input = $client->getConnection()->receive();
-	if (preg_match('/^<message to/', $input)) {
-		// beginning of message
-		$xmlData .= $input;
-		if (preg_match('/<\/message>$/', $input)) {
-			// full product (not split up)
+
+	printToLog("Connecting to " . $CONF['server']);
+
+	// connect to NWWS-OI server
+	$options = new Options('tcp://' . $CONF['server'] . ':5222');
+	$options->setUsername($CONF['username'])->setPassword($CONF['password']);
+	$client = new Client($options);
+	try {
+		$client->connect();
+	} catch (Fabiang\Xmpp\Exception $e) {
+		continue;
+		sleep(3);
+	}
+
+	printToLog("Connected.");
+
+	// fetch roster list; users and their groups
+	$client->send(new Roster);
+	// set status to online
+	$client->send(new Presence);
+
+	// join nwws channel
+	$channel = new Presence;
+	$channel->setTo('nwws@conference.' . $CONF['server'] . '/' . $CONF['resource'])->setNickName($CONF['username']);
+	$client->send($channel);
+
+	// start receiving products
+	$xmlData = '';
+	$scanFlag = 0;
+	while(TRUE) {
+		try {
+			$input = $client->getConnection()->receive();
+		} catch (Fabiang\Xmpp\Exception $e) {
+			continue;
+		}
+		if (preg_match('/^<message to/', $input)) {
+			// beginning of message
+			$xmlData .= $input;
+			if (preg_match('/<\/message>$/', $input)) {
+				// full product (not split up)
+				writeProduct($xmlData);
+				$xmlData = '';
+			} else {
+				$scanFlag = 1;
+			}
+		} elseif ($scanFlag && preg_match('/\<\/message\>$/', $input)) {
+			// end of previous message
+			$xmlData .= $input;
 			writeProduct($xmlData);
 			$xmlData = '';
-		} else {
-			$scanFlag = 1;
+			$scanFlag = 0;
+		} elseif ($scanFlag) {
+			// middle of long message
+			$xmlData .= $input;
 		}
-	} elseif ($scanFlag && preg_match('/\<\/message\>$/', $input)) {
-		// end of previous message
-		$xmlData .= $input;
-		writeProduct($xmlData);
-		$xmlData = '';
-		$scanFlag = 0;
-	} elseif ($scanFlag) {
-		// middle of long message
-		$xmlData .= $input;
 	}
+
+	printToLog("Disconnected.");
+	sleep(3);
 }
 
 
