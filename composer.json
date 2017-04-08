@@ -1,5 +1,18 @@
 {
-    "require": {
-        "fabiang/xmpp": "^0.6.1"
-    }
+        "name": "jbuitt/nwws-php-client",
+        "type": "library",
+        "description": "NWWS PHP Client",
+        "keywords": [
+                "nwws", "xmpp", "client"
+        ],
+        "homepage": "https://github.com/jbuitt/nwws-php-client",
+        "license": "MIT",
+        "authors": [{
+                "name": "Jim Buitt",
+                "email": "jim.buitt@gmail.com"
+        }],
+        "require": {
+                "php": ">=7.0",
+        	"fabiang/xmpp": "^0.6.1"
+        }
 }

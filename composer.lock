@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6c8d318352d0ac7afde587f01800869d",
-    "content-hash": "9abfce7f6233d93447ed20fe53153086",
+    "hash": "2b99f85e320fc1cb6cf756ffd3354a93",
+    "content-hash": "34c11acd87ad029552b75ef8b70fa2c5",
     "packages": [
         {
             "name": "fabiang/xmpp",
@@ -119,6 +119,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=7.0"
+    },
     "platform-dev": []
 }
