@@ -12,7 +12,7 @@ This script was developed and tested on [Ubuntu 16.04](http://ubuntu.com). After
     $ composer install
 ```
 
-Now create a config file with the following JSON format:
+Now create a JSON config file with the following format:
 
 ```
 {
