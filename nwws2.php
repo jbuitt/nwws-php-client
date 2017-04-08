@@ -13,6 +13,24 @@ if($argc < 2) {
         exit;
 }
 
+// setup signal handlers
+declare(ticks = 1);
+pcntl_signal(SIGINT, "signalHandler");
+pcntl_signal(SIGTERM, "signalHandler");
+
+// write out PID
+if (getenv('PIDFILE')) {
+	if (is_writable(dirname(getenv('PIDFILE')))) {
+		exec("echo " . getmypid() . " >" . getenv('PIDFILE'));
+	} else {
+		printToLog("Warning: PID file is not writable, defaulting to ./nwws2.pid");
+		exec("echo " . getmypid() . " >./nwws2.pid");
+	}
+} else {
+	exec("echo " . getmypid() . " >./nwws2.pid");
+}
+
+// parse config
 $CONF = json_decode(file_get_contents($argv[1]), TRUE);
 
 // start connect loop
@@ -168,3 +186,21 @@ function printToLog($logMsg)
         fclose($logfile);
 }
 
+function signalHandler($signo)
+{
+	switch ($signo) {
+		case SIGINT:
+			fwrite(STDERR, "Caught INT signal. Exiting.\n");
+		case SIGTERM:
+			// handle shutdown tasks
+			if (getenv('PIDFILE')) {
+				unlink(getenv('PIDFILE'));
+			} else {
+				unlink('./nwws2.pid');
+			}
+			exit;
+			break;
+		default:
+			// handle all other signals
+     }
+}
