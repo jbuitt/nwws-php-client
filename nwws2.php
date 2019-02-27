@@ -58,7 +58,7 @@ while(TRUE) {
 
 	// join nwws channel
 	$channel = new Presence;
-	$channel->setTo('nwws@conference.' . $CONF['server'] . '/' . $CONF['resource'])->setNickName($CONF['username']);
+	$channel->setTo('nwws@conference.' . $CONF['server'] . '/' . $CONF['resource']);
 	$client->send($channel);
 
 	// start receiving products
