@@ -34,7 +34,7 @@ if (getenv('PIDFILE')) {
 $CONF = json_decode(file_get_contents($argv[1]), TRUE);
 
 // Create a default product filter set if the configuration doesn't exist in the config file
-if (!is_array($CONF['wmofilter']) {
+if (!is_array($CONF['wmofilter'])) {
 	printToLog("Applying default product filter");
 	$wmoFilter = array (
 		"/.{4,6}/" // allow all products
