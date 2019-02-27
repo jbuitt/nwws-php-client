@@ -36,10 +36,10 @@ $CONF = json_decode(file_get_contents($argv[1]), TRUE);
 // start connect loop
 while(TRUE) {
 
-	printToLog("Connecting to " . $CONF['server']);
+	printToLog("Connecting to " . $CONF['server'] . " port " . $CONF['port']);
 
 	// connect to NWWS-OI server
-	$options = new Options('tcp://' . $CONF['server'] . ':5222');
+	$options = new Options('tcp://' . $CONF['server'] . ':' . $CONF['port']);
 	$options->setUsername($CONF['username'])->setPassword($CONF['password']);
 	$client = new Client($options);
 	try {
