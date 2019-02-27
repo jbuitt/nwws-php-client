@@ -33,6 +33,17 @@ if (getenv('PIDFILE')) {
 // parse config
 $CONF = json_decode(file_get_contents($argv[1]), TRUE);
 
+// Create a default product filter set if the configuration doesn't exist in the config file
+if (!is_array($CONF['wmofilter']) {
+	printToLog("Applying default product filter");
+	$wmoFilter = array (
+		"/.{4,6}/" // allow all products
+	);
+} else {
+	printToLog("Using product filter from configuration file");
+	$wmoFilter = $CONF['wmofilter'];
+}
+
 // start connect loop
 while(TRUE) {
 
@@ -100,6 +111,7 @@ while(TRUE) {
 function writeProduct($xmlData)
 {
         global $CONF;
+		global $wmoFilter;
 	// Prepend <messages> and append </messages> to satisfy XML parser
 	$xmlData = '<messages>' . $xmlData . '</messages>';
 	$xmlData = str_replace('x xmlns="nwws-oi"', 'x xmlns="http://nwws-oi"', $xmlData);
@@ -121,6 +133,20 @@ function writeProduct($xmlData)
 		if (preg_match('/issues TST valid/', $xmlObj->message[$i]->body)) {
 			return;
 		}
+		
+		// Apply WMO code filter
+		$wmoFilterPass = false;
+		foreach ($wmoFilter as $wmoMatch) {
+			if (preg_match($wmoMatch, strtolower($xmlObj->message[$i]->x->attributes()->ttaaii))) {
+				$wmoFilterPass = true;
+			}
+		}
+		
+		if (!$wmoFilterPass) {
+			printToLog("Skipped WMO code " . strtolower($xmlObj->message[$i]->x->attributes()->ttaaii) . " from " . strtolower($xmlObj->message[$i]->x->attributes()->cccc));
+			return;
+		}
+		
 		printToLog("message stanza rcvd from nwws-oi saying... " . $xmlObj->message[$i]->body . ", timestamp ". gmdate("Y-m-dTH:i:sZ"));
 		$awipsid  = '';
 		$wfo      = '';

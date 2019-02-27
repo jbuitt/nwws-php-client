@@ -30,6 +30,28 @@ Now create a JSON config file with the following format:
 
 Where [username] and [password] are your NWWS-2 credentials obtained by signing up [on the NOAA Weather Wire Service website](http://www.nws.noaa.gov/nwws/#NWWS_OI_Request). You may use whatever you would like for [resource]. The "pan_run" variable is an optional Product Arrival Notification (PAN) script that you'd like to run on product arrival.
 
+You can also filter products by their WMO header. For example, if you only wanted tornado warnings and severe thunderstorm warnings, you could add a 'wmofilter' section to your config file so it looks like this:
+
+```
+{
+  "server": "nwws-oi.weather.gov",
+  "port": 5222,
+  "username": "[username]",
+  "password": "[password]",
+  "resource": "[resource]",
+  "logpath": "/path/to/log/dir",
+  "logprefix": "logfile",
+  "archivedir": "/path/to/archive/dir",
+  "pan_run": "/path/to/executable_or_script",
+  "wmofilter": [
+    "/^wf.+/",
+    "/^wu.+/"
+  ]
+}
+```
+
+The wmofilter element should be a JSON array with regex patterns of the products you want.
+
 Now run the script:
 
 ```
