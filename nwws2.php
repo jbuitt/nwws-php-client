@@ -76,6 +76,14 @@ while(TRUE) {
 	$xmlData = '';
 	$scanFlag = 0;
 	while(TRUE) {
+		
+		// check to make sure the socket is still open before doing anything else.
+		// The NWWS-OI server likes to kill connections from time to time.
+		if (!is_resource($client->getConnection()->getSocket()->getResource())) {
+			printToLog("Socket is invalid, server probably disconnected us");
+			continue 2;
+		}
+		
 		try {
 			$input = $client->getConnection()->receive();
 		} catch (Fabiang\Xmpp\Exception $e) {
