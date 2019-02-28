@@ -14,6 +14,6 @@
         "require": {
                 "php": ">=7.0",
 		"ext-pcntl" : "*",
-        	"fabiang/xmpp": "^0.6.1"
+        	"zorn-v/xmpp": "^0.8.1"
         }
 }

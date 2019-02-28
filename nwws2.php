@@ -47,10 +47,10 @@ if (!is_array($CONF['wmofilter'])) {
 // start connect loop
 while(TRUE) {
 
-	printToLog("Connecting to " . $CONF['server']);
+	printToLog("Connecting to " . $CONF['server'] . " port " . $CONF['port']);
 
 	// connect to NWWS-OI server
-	$options = new Options('tcp://' . $CONF['server'] . ':5222');
+	$options = new Options('tcp://' . $CONF['server'] . ':' . $CONF['port']);
 	$options->setUsername($CONF['username'])->setPassword($CONF['password']);
 	$client = new Client($options);
 	try {
@@ -69,7 +69,7 @@ while(TRUE) {
 
 	// join nwws channel
 	$channel = new Presence;
-	$channel->setTo('nwws@conference.' . $CONF['server'] . '/' . $CONF['resource'])->setNickName($CONF['username']);
+	$channel->setTo('nwws@conference.' . $CONF['server'] . '/' . $CONF['resource']);
 	$client->send($channel);
 
 	// start receiving products
