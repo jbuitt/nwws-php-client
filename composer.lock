@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d58c942c52a1799c66b396018f56e42",
+    "content-hash": "ff37dabd5679e6c9732d39ba75bac295",
     "packages": [
         {
             "name": "psr/log",
@@ -55,20 +55,20 @@
         },
         {
             "name": "zorn-v/xmpp",
-            "version": "0.8.1",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zorn-v/xmpp.git",
-                "reference": "163f7a2b1b54927dd3ed7c60702b26e73178f2d9"
+                "reference": "c49e4d105816d294224658f73bf79147e49d4a1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zorn-v/xmpp/zipball/163f7a2b1b54927dd3ed7c60702b26e73178f2d9",
-                "reference": "163f7a2b1b54927dd3ed7c60702b26e73178f2d9",
+                "url": "https://api.github.com/repos/zorn-v/xmpp/zipball/c49e4d105816d294224658f73bf79147e49d4a1e",
+                "reference": "c49e4d105816d294224658f73bf79147e49d4a1e",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0",
+                "php": "^5.6 || ^7.0 || ^8.0",
                 "psr/log": "^1.0"
             },
             "require-dev": {
@@ -116,7 +116,11 @@
                 "jabber",
                 "xmpp"
             ],
-            "time": "2018-04-26T06:48:43+00:00"
+            "support": {
+                "issues": "https://github.com/zorn-v/xmpp/issues",
+                "source": "https://github.com/zorn-v/xmpp/tree/1.0.1"
+            },
+            "time": "2024-04-15T21:59:51+00:00"
         }
     ],
     "packages-dev": [],
@@ -129,5 +133,6 @@
         "php": ">=7.0",
         "ext-pcntl": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
 }
