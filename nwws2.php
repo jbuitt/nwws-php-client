@@ -8,16 +8,14 @@ use Fabiang\Xmpp\Protocol\Roster;
 use Fabiang\Xmpp\Protocol\Presence;
 use Fabiang\Xmpp\Protocol\Message;
 
-if($argc < 2) {
+if ($argc < 2) {
         echo "Usage: $argv[0] /path/to/config/file\n";
         exit;
 }
-
 // setup signal handlers
 declare(ticks = 1);
 pcntl_signal(SIGINT, "signalHandler");
 pcntl_signal(SIGTERM, "signalHandler");
-
 // write out PID
 if (getenv('PIDFILE')) {
 	if (is_writable(dirname(getenv('PIDFILE')))) {
@@ -29,10 +27,8 @@ if (getenv('PIDFILE')) {
 } else {
 	exec("echo " . getmypid() . " >./nwws2.pid");
 }
-
 // parse config
 $CONF = json_decode(file_get_contents($argv[1]), TRUE);
-
 // Create a default product filter set if the configuration doesn't exist in the config file
 if (!in_array('wmofilter', $CONF)) {
 	printToLog("Applying default product filter");
@@ -43,12 +39,9 @@ if (!in_array('wmofilter', $CONF)) {
 	printToLog("Using product filter from configuration file");
 	$wmoFilter = $CONF['wmofilter'];
 }
-
 // start connect loop
 while(TRUE) {
-
 	printToLog("Connecting to " . $CONF['server'] . " port " . $CONF['port']);
-
 	// connect to NWWS-OI server
 	$options = new Options('tcp://' . $CONF['server'] . ':' . $CONF['port']);
 	$options->setUsername($CONF['username'])->setPassword($CONF['password']);
@@ -59,34 +52,31 @@ while(TRUE) {
 		continue;
 		sleep(3);
 	}
-
 	printToLog("Connected.");
-
 	// fetch roster list; users and their groups
 	$client->send(new Roster);
 	// set status to online
 	$client->send(new Presence);
-
 	// join nwws channel
 	$channel = new Presence;
 	$channel->setTo('nwws@conference.' . $CONF['server'] . '/' . $CONF['resource']);
 	$client->send($channel);
-
 	// start receiving products
 	$xmlData = '';
 	$scanFlag = 0;
 	while(TRUE) {
-		
 		// check to make sure the socket is still open before doing anything else.
 		// The NWWS-OI server likes to kill connections from time to time.
 		if (!is_resource($client->getConnection()->getSocket()->getResource())) {
 			printToLog("Socket is invalid, server probably disconnected us");
 			continue 2;
 		}
-		
+		// Receive data from server
 		try {
 			$input = $client->getConnection()->receive();
 		} catch (Fabiang\Xmpp\Exception $e) {
+			continue;
+		} catch (Fabiang\Xmpp\Exception\XMLParserException $e) {
 			continue;
 		}
 		if (preg_match('/^<message to/', $input)) {
@@ -110,16 +100,14 @@ while(TRUE) {
 			$xmlData .= $input;
 		}
 	}
-
 	printToLog("Disconnected.");
 	sleep(3);
 }
 
-
 function writeProduct($xmlData)
 {
-        global $CONF;
-		global $wmoFilter;
+    global $CONF;
+	global $wmoFilter;
 	// Prepend <messages> and append </messages> to satisfy XML parser
 	$xmlData = '<messages>' . $xmlData . '</messages>';
 	$xmlData = str_replace('x xmlns="nwws-oi"', 'x xmlns="http://nwws-oi"', $xmlData);
@@ -141,23 +129,28 @@ function writeProduct($xmlData)
 		if (preg_match('/issues TST valid/', $xmlObj->message[$i]->body)) {
 			return;
 		}
-		
 		// Apply WMO code filter
 		$wmoFilterPass = false;
 		foreach ($wmoFilter as $wmoMatch) {
-			if (!isset($xmlObj->message[$i]->x->attributes()->ttaaii)) {
-				continue;
+			if (is_null($xmlObj) || 
+				is_null($xmlObj->message[$i]) ||
+				is_null($xmlObj->message[$i]->x) ||
+				is_null($xmlObj->message[$i]->x->attributes()) ||
+				is_null($xmlObj->message[$i]->x->attributes()->ttaaii) ||
+				is_null($xmlObj->message[$i]->x->attributes()->cccc)
+			) {
+				continue 2;
 			}
 			if (preg_match($wmoMatch, strtolower($xmlObj->message[$i]->x->attributes()->ttaaii))) {
 				$wmoFilterPass = true;
 			}
 		}
-		
+		// Check if WMO code should be skipped
 		if (!$wmoFilterPass) {
 			printToLog("Skipped WMO code " . strtolower($xmlObj->message[$i]->x->attributes()->ttaaii) . " from " . strtolower($xmlObj->message[$i]->x->attributes()->cccc));
 			return;
 		}
-		
+		// Build product data file name components
 		printToLog("message stanza rcvd from nwws-oi saying... " . $xmlObj->message[$i]->body . ", timestamp ". gmdate("Y-m-dTH:i:sZ"));
 		$awipsid  = '';
 		$wfo      = '';
@@ -196,9 +189,13 @@ function writeProduct($xmlData)
 			$tmp_array = explode('.', $id);
 			$new_id = gmdate('yHi') . '_' . substr(time(), 0, 3) . substr($tmp_array[1], 0, 5);
 			$file = $wfo . '_' . $wmoCode . '-' . $awipsid . '.' . $new_id . '.txt';
+			if (file_exists($CONF['archivedir'] . '/' . $wfo . '/' . $file)) {
+				printToLog('Warning: File ' . $CONF['archivedir'] . '/' . $wfo . '/' . $file . ' already exists, skipping.');
+				continue;
+			}
 			$outfile = fopen($CONF['archivedir'] . '/' . $wfo . '/' . $file, "w");
 			$prod_contents = preg_split("/\n\n/", $xmlObj->message[$i]->x);
-			for($j=0; $j<count($prod_contents); $j++) {
+			for ($j=0; $j<count($prod_contents); $j++) {
 				fwrite($outfile, $prod_contents[$j] . "\n");
 			}
 			fclose($outfile);
@@ -236,7 +233,6 @@ function signalHandler($signo)
 				unlink('./nwws2.pid');
 			}
 			exit;
-			break;
 		default:
 			// handle all other signals
      }
